@@ -1,29 +1,15 @@
 class Enemy {
-    constructor(x, y, size = 1) {
+    constructor(x, y, lane = 0) {
         this.x = x;
         this.y = y;
-        this.size = size;
+        this.lane = lane;
 
-        // 크기별 설정
-        switch (size) {
-            case 0.5:
-                this.width = 20;
-                this.height = 20;
-                this.maxHP = 20;
-                break;
-            case 2:
-                this.width = 80;
-                this.height = 80;
-                this.maxHP = 200;
-                break;
-            default:
-                this.width = 40;
-                this.height = 40;
-                this.maxHP = 50;
-        }
+        this.width = 40;
+        this.height = 40;
+        this.maxHP = 50;
 
         this.hp = this.maxHP;
-        this.baseSpeed = 50;
+        this.baseSpeed = 30;
         this.speed = this.baseSpeed;
         this.speedMultiplier = 1;
         this.isStunned = false;
@@ -32,7 +18,7 @@ class Enemy {
         this.active = true;
     }
 
-    update(deltaTime) {
+    update(deltaTime, enemies) {
         // 상태이상 업데이트
         this.statusEffects = this.statusEffects.filter(effect => {
             const stillActive = effect.update(deltaTime, this);
@@ -44,8 +30,42 @@ class Enemy {
 
         // 이동
         if (!this.isStunned) {
-            this.y += this.speed * this.speedMultiplier * deltaTime;
+            const moveDistance = this.speed * this.speedMultiplier * deltaTime;
+            const targetY = this.y + moveDistance;
+
+            // 같은 레인의 앞 적 블로킹 체크
+            const blockingEnemy = this.findBlockingEnemy(enemies, targetY);
+
+            if (blockingEnemy) {
+                // 앞 적과 충돌하지 않는 선까지만 이동
+                const maxY = blockingEnemy.y - blockingEnemy.height / 2 - this.height / 2 - 1;
+                this.y = Math.min(targetY, maxY);
+            } else {
+                this.y = targetY;
+            }
         }
+    }
+
+    findBlockingEnemy(enemies, targetY) {
+        for (const enemy of enemies) {
+            if (enemy === this || !enemy.active) continue;
+
+            // 같은 레인 체크
+            if (enemy.lane === this.lane) {
+                // 앞에 있는 적인지 확인
+                if (enemy.y < this.y) {
+                    const enemyBottom = enemy.y + enemy.height / 2;
+                    const myTop = targetY - this.height / 2;
+
+                    // 충돌 예상 체크
+                    if (myTop <= enemyBottom) {
+                        return enemy;
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
     draw(ctx) {

@@ -78,7 +78,7 @@ class Game {
         });
 
         // 적 업데이트
-        this.enemies.forEach(enemy => enemy.update(deltaTime));
+        this.enemies.forEach(enemy => enemy.update(deltaTime, this.enemies));
         this.enemies = this.enemies.filter(enemy => enemy.active && enemy.y < this.height + 50);
 
         // 충돌 감지
@@ -140,9 +140,14 @@ class Game {
     }
 
     spawnEnemy() {
-        const x = randomInt(40, this.width - 40);
-        const size = randomChoice([0.5, 1, 1, 1, 2]);
-        this.enemies.push(new Enemy(x, -40, size));
+        const lanes = 5;
+        const laneWidth = this.width / lanes;
+        const y = -40;
+
+        for (let i = 0; i < lanes; i++) {
+            const x = laneWidth * i + laneWidth / 2;
+            this.enemies.push(new Enemy(x, y, i));
+        }
     }
 
     addExp(amount) {
