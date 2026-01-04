@@ -1,0 +1,146 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+}
+
+#game-container {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    height: 100vh;
+    background: #1a1a1a;
+}
+
+#gameCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    touch-action: none;
+}
+
+#ui-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+#hud {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    pointer-events: none;
+}
+
+#hp-bar {
+    width: 100%;
+    height: 20px;
+    background: #333;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#hp-fill {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #f00, #ff0);
+    transition: width 0.3s;
+}
+
+#ammo-count {
+    margin-top: 10px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#reload-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ff0;
+    font-size: 48px;
+    font-weight: bold;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#reload-indicator.active {
+    opacity: 1;
+    animation: pulse 0.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.1); }
+}
+
+#levelup-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.95);
+    border: 3px solid #3498db;
+    border-radius: 10px;
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    pointer-events: auto;
+}
+
+#levelup-modal.hidden {
+    display: none;
+}
+
+#levelup-modal h2 {
+    color: #3498db;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#levelup-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.choice-btn {
+    background: #2c3e50;
+    border: 2px solid #3498db;
+    color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s;
+}
+
+.choice-btn:hover {
+    background: #34495e;
+    transform: scale(1.05);
+}
+
+.choice-btn strong {
+    color: #3498db;
+    display: block;
+    margin-bottom: 5px;
+}

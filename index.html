@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Reloading</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+
+        <div id="ui-overlay">
+            <div id="hud">
+                <div id="hp-bar">
+                    <div id="hp-fill"></div>
+                </div>
+                <div id="ammo-count">0/0</div>
+                <div id="reload-indicator">RELOAD</div>
+            </div>
+
+            <div id="levelup-modal" class="hidden">
+                <h2>Level Up!</h2>
+                <div id="levelup-choices"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/bullets/Bullet.js"></script>
+    <script src="js/bullets/NormalBullet.js"></script>
+    <script src="js/bullets/SpecialBullets.js"></script>
+    <script src="js/StatusEffect.js"></script>
+    <script src="js/Magazine.js"></script>
+    <script src="js/Player.js"></script>
+    <script src="js/Enemy.js"></script>
+    <script src="js/LevelUpSystem.js"></script>
+    <script src="js/UI.js"></script>
+    <script src="js/Game.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
