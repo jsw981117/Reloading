@@ -8,6 +8,15 @@ class Game {
         this.canvas.width = this.width;
         this.canvas.height = this.height;
 
+        this.config = {
+            enemySpeed: 30,
+            enemyHP: 50,
+            lanes: 5
+        };
+
+        this.timeScale = 1;
+        this.godMode = false;
+
         this.player = new Player(this.width, this.height);
         this.bullets = [];
         this.enemies = [];
@@ -15,6 +24,7 @@ class Game {
 
         this.levelUpSystem = new LevelUpSystem();
         this.ui = new UI();
+        this.debugMenu = new DebugMenu(this);
 
         this.exp = 0;
         this.level = 0;
@@ -60,6 +70,8 @@ class Game {
 
     update(deltaTime) {
         if (this.isPaused) return;
+
+        deltaTime *= this.timeScale;
 
         // 플레이어 업데이트 & 사격
         const newBullets = this.player.update(deltaTime, this.inputX, this.inputY);
@@ -140,13 +152,13 @@ class Game {
     }
 
     spawnEnemy() {
-        const lanes = 5;
+        const lanes = this.config.lanes;
         const laneWidth = this.width / lanes;
         const y = -40;
 
         for (let i = 0; i < lanes; i++) {
             const x = laneWidth * i + laneWidth / 2;
-            this.enemies.push(new Enemy(x, y, i));
+            this.enemies.push(new Enemy(x, y, i, this.config));
         }
     }
 

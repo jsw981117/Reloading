@@ -1,15 +1,15 @@
 class Enemy {
-    constructor(x, y, lane = 0) {
+    constructor(x, y, lane = 0, config = null) {
         this.x = x;
         this.y = y;
         this.lane = lane;
 
         this.width = 40;
         this.height = 40;
-        this.maxHP = 50;
+        this.maxHP = config ? config.enemyHP : 50;
 
         this.hp = this.maxHP;
-        this.baseSpeed = 30;
+        this.baseSpeed = config ? config.enemySpeed : 30;
         this.speed = this.baseSpeed;
         this.speedMultiplier = 1;
         this.isStunned = false;

@@ -20,6 +20,27 @@
                 <div id="reload-indicator">RELOAD</div>
             </div>
 
+            <button id="settings-btn">⚙️</button>
+
+            <div id="settings-modal" class="modal hidden">
+                <div class="modal-content">
+                    <h2>설정</h2>
+                    <button id="debug-menu-btn" class="menu-btn">🛠️ 디버그 메뉴</button>
+                    <button id="settings-close-btn" class="close-btn">닫기</button>
+                </div>
+            </div>
+
+            <div id="debug-modal" class="modal hidden">
+                <div class="modal-content debug-content">
+                    <h2>🛠️ 디버그 메뉴</h2>
+                    <div id="debug-sections"></div>
+                    <div class="modal-actions">
+                        <button id="debug-apply-btn" class="apply-btn">적용</button>
+                        <button id="debug-close-btn" class="close-btn">닫기</button>
+                    </div>
+                </div>
+            </div>
+
             <div id="levelup-modal" class="hidden">
                 <h2>Level Up!</h2>
                 <div id="levelup-choices"></div>
@@ -36,6 +57,7 @@
     <script src="js/Player.js"></script>
     <script src="js/Enemy.js"></script>
     <script src="js/LevelUpSystem.js"></script>
+    <script src="js/DebugMenu.js"></script>
     <script src="js/UI.js"></script>
     <script src="js/Game.js"></script>
     <script src="js/main.js"></script>

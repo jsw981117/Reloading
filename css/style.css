@@ -144,3 +144,147 @@ body {
     display: block;
     margin-bottom: 5px;
 }
+
+#settings-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 50px;
+    height: 50px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid #3498db;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    pointer-events: auto;
+    transition: all 0.2s;
+    z-index: 10;
+}
+
+#settings-btn:hover {
+    background: rgba(52, 152, 219, 0.3);
+    transform: scale(1.1);
+}
+
+.modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: auto;
+    z-index: 100;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: #1a1a1a;
+    border: 3px solid #3498db;
+    border-radius: 10px;
+    padding: 30px;
+    width: 90%;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-content h2 {
+    color: #3498db;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.menu-btn, .close-btn, .apply-btn {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    background: #2c3e50;
+    border: 2px solid #3498db;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.menu-btn:hover, .close-btn:hover, .apply-btn:hover {
+    background: #34495e;
+    transform: scale(1.02);
+}
+
+.debug-content {
+    max-width: 600px;
+}
+
+#debug-sections {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.debug-section {
+    background: #2c3e50;
+    border: 2px solid #34495e;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.debug-section h3 {
+    color: #3498db;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.debug-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 8px 0;
+}
+
+.debug-field label {
+    color: #fff;
+    font-size: 14px;
+    flex: 1;
+}
+
+.debug-field input {
+    width: 100px;
+    padding: 5px;
+    background: #34495e;
+    border: 1px solid #3498db;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 14px;
+}
+
+.debug-field button {
+    padding: 5px 15px;
+    background: #e74c3c;
+    border: none;
+    border-radius: 3px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.debug-field button:hover {
+    background: #c0392b;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.modal-actions button {
+    flex: 1;
+}
