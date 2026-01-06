@@ -1,24 +1,44 @@
 class Enemy {
-    constructor(x, y, lane = 0, config = null) {
+    constructor(x, y, lane = 0, config = null, size = 1, isBoss = false) {
         this.x = x;
         this.y = y;
         this.lane = lane;
+        this.size = size;
+        this.isBoss = isBoss;
 
-        this.width = 40;
-        this.height = 40;
-        this.maxHP = config ? config.enemyHP : 50;
+        // 크기별 설정
+        if (size === 2) {
+            this.width = 80;
+            this.height = 80;
+            this.maxHP = 500;
+        } else if (size === 3) {
+            this.width = 120;
+            this.height = 120;
+            this.maxHP = 2000;
+        } else {
+            this.width = 40;
+            this.height = 40;
+            this.maxHP = config ? config.enemyHP : 50;
+        }
 
         this.hp = this.maxHP;
         this.baseSpeed = config ? config.enemySpeed : 30;
         this.speed = this.baseSpeed;
         this.speedMultiplier = 1;
         this.isStunned = false;
+        this.attackPower = 10;
+        this.playerCollisionCooldown = 0;
 
         this.statusEffects = [];
         this.active = true;
     }
 
     update(deltaTime, enemies) {
+        // 플레이어 충돌 쿨다운
+        if (this.playerCollisionCooldown > 0) {
+            this.playerCollisionCooldown -= deltaTime;
+        }
+
         // 상태이상 업데이트
         this.statusEffects = this.statusEffects.filter(effect => {
             const stillActive = effect.update(deltaTime, this);
@@ -79,16 +99,28 @@ class Enemy {
             color = '#ffff00';
         }
 
+        // 보스 색상
+        if (this.isBoss) {
+            color = this.size === 3 ? '#800' : '#a00';
+        }
+
         ctx.fillStyle = color;
         ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
 
+        // 보스 테두리
+        if (this.isBoss) {
+            ctx.strokeStyle = this.size === 3 ? '#f00' : '#f80';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+        }
+
         // HP 바
         const barWidth = this.width;
-        const barHeight = 4;
+        const barHeight = this.isBoss ? 8 : 4;
         ctx.fillStyle = '#333';
-        ctx.fillRect(this.x - barWidth / 2, this.y - this.height / 2 - 8, barWidth, barHeight);
+        ctx.fillRect(this.x - barWidth / 2, this.y - this.height / 2 - 12, barWidth, barHeight);
         ctx.fillStyle = '#0f0';
-        ctx.fillRect(this.x - barWidth / 2, this.y - this.height / 2 - 8, barWidth * (this.hp / this.maxHP), barHeight);
+        ctx.fillRect(this.x - barWidth / 2, this.y - this.height / 2 - 12, barWidth * (this.hp / this.maxHP), barHeight);
     }
 
     takeDamage(amount) {

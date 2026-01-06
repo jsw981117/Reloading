@@ -39,48 +39,155 @@ body {
     pointer-events: none;
 }
 
+/* 화면 전환 */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.9);
+    pointer-events: auto;
+    z-index: 50;
+}
+
+.screen.hidden {
+    display: none;
+}
+
+.screen h1 {
+    font-size: 48px;
+    color: #3498db;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px #000;
+}
+
+#game-title {
+    font-size: 60px;
+    color: #ff0;
+    text-shadow: 3px 3px 6px #f00;
+}
+
+#best-score, #survival-time {
+    font-size: 24px;
+    color: #fff;
+    margin-bottom: 30px;
+}
+
+.game-btn {
+    padding: 15px 40px;
+    margin: 10px;
+    background: #2c3e50;
+    border: 3px solid #3498db;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    pointer-events: auto;
+    transition: all 0.2s;
+}
+
+.game-btn:hover {
+    background: #34495e;
+    transform: scale(1.05);
+}
+
+.button-group {
+    display: flex;
+    gap: 20px;
+}
+
+/* HUD */
 #hud {
     position: absolute;
-    top: 10px;
-    left: 10px;
-    right: 10px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
 }
 
-#hp-bar {
+#hud.hidden {
+    display: none;
+}
+
+/* 타임라인 바 (상단 중앙) */
+#timeline-container {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 400px;
+}
+
+#timeline-bar {
+    position: relative;
     width: 100%;
     height: 20px;
     background: #333;
-    border: 2px solid #fff;
+    border: 2px solid #3498db;
     border-radius: 10px;
     overflow: hidden;
 }
 
-#hp-fill {
-    width: 100%;
+#timeline-fill {
+    width: 0%;
     height: 100%;
-    background: linear-gradient(90deg, #f00, #ff0);
+    background: linear-gradient(90deg, #3498db, #e74c3c);
     transition: width 0.3s;
 }
 
-#ammo-count {
-    margin-top: 10px;
+.boss-marker {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    text-shadow: 1px 1px 2px #000;
+    pointer-events: none;
+}
+
+.boss-marker.red {
+    filter: hue-rotate(-30deg) brightness(1.5);
+}
+
+/* HP 표시 (상단 좌측) */
+#hp-display {
+    position: absolute;
+    top: 40px;
+    left: 10px;
     color: #fff;
     font-size: 20px;
     font-weight: bold;
-    text-align: center;
+    text-shadow: 2px 2px 4px #000;
+}
+
+/* 탄약 표시 (좌측 하단) */
+#ammo-container {
+    position: absolute;
+    bottom: 20px;
+    left: 10px;
+}
+
+#ammo-count {
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px #000;
 }
 
 #reload-indicator {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    margin-top: 5px;
     color: #ff0;
-    font-size: 48px;
+    font-size: 24px;
     font-weight: bold;
     opacity: 0;
-    pointer-events: none;
+    text-shadow: 2px 2px 4px #000;
 }
 
 #reload-indicator.active {
@@ -89,8 +196,8 @@ body {
 }
 
 @keyframes pulse {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); }
-    50% { transform: translate(-50%, -50%) scale(1.1); }
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
 }
 
 #levelup-modal {

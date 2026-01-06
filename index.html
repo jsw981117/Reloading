@@ -12,12 +12,52 @@
         <canvas id="gameCanvas"></canvas>
 
         <div id="ui-overlay">
-            <div id="hud">
-                <div id="hp-bar">
-                    <div id="hp-fill"></div>
+            <!-- 타이틀 화면 -->
+            <div id="title-screen" class="screen hidden">
+                <h1 id="game-title">리로딩!!</h1>
+                <div id="best-score">최고 점수: -</div>
+                <button id="start-btn" class="game-btn">게임 시작</button>
+            </div>
+
+            <!-- 게임 오버 화면 -->
+            <div id="gameover-screen" class="screen hidden">
+                <h1>GAME OVER</h1>
+                <div id="survival-time">생존 시간: -</div>
+                <div class="button-group">
+                    <button id="restart-btn" class="game-btn">재시작</button>
+                    <button id="title-btn" class="game-btn">타이틀로</button>
                 </div>
-                <div id="ammo-count">0/0</div>
-                <div id="reload-indicator">RELOAD</div>
+            </div>
+
+            <!-- 게임 클리어 화면 -->
+            <div id="clear-screen" class="screen hidden">
+                <h1>GAME CLEAR!</h1>
+                <div class="button-group">
+                    <button id="clear-restart-btn" class="game-btn">재시작</button>
+                    <button id="clear-title-btn" class="game-btn">타이틀로</button>
+                </div>
+            </div>
+
+            <!-- 게임 HUD -->
+            <div id="hud" class="hidden">
+                <!-- 타임라인 바 (상단 중앙) -->
+                <div id="timeline-container">
+                    <div id="timeline-bar">
+                        <div id="timeline-fill"></div>
+                        <div class="boss-marker" style="left: 33.33%" title="3분">💀</div>
+                        <div class="boss-marker" style="left: 66.66%" title="6분">💀</div>
+                        <div class="boss-marker red" style="left: 100%" title="9분">💀</div>
+                    </div>
+                </div>
+
+                <!-- HP 표시 (상단 좌측) -->
+                <div id="hp-display">HP: 100</div>
+
+                <!-- 탄약 표시 (좌측 하단) -->
+                <div id="ammo-container">
+                    <div id="ammo-count">10/10</div>
+                    <div id="reload-indicator">RELOAD</div>
+                </div>
             </div>
 
             <button id="settings-btn">⚙️</button>

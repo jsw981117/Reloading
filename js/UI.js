@@ -1,18 +1,81 @@
 class UI {
-    constructor() {
-        this.hpFill = document.getElementById('hp-fill');
+    constructor(game) {
+        this.game = game;
+
+        // Screens
+        this.titleScreen = document.getElementById('title-screen');
+        this.gameoverScreen = document.getElementById('gameover-screen');
+        this.clearScreen = document.getElementById('clear-screen');
+        this.hud = document.getElementById('hud');
+
+        // HUD elements
+        this.hpDisplay = document.getElementById('hp-display');
         this.ammoCount = document.getElementById('ammo-count');
         this.reloadIndicator = document.getElementById('reload-indicator');
+        this.timelineFill = document.getElementById('timeline-fill');
+        this.bestScoreDisplay = document.getElementById('best-score');
+        this.survivalTimeDisplay = document.getElementById('survival-time');
+
+        // Modals
         this.levelupModal = document.getElementById('levelup-modal');
         this.levelupChoices = document.getElementById('levelup-choices');
 
         this.currentChoices = null;
         this.onChoiceCallback = null;
+
+        this.setupButtons();
     }
 
-    updateHP(current, max) {
-        const percent = (current / max) * 100;
-        this.hpFill.style.width = percent + '%';
+    setupButtons() {
+        document.getElementById('start-btn').onclick = () => this.game.startGame();
+        document.getElementById('restart-btn').onclick = () => this.game.resetGame();
+        document.getElementById('title-btn').onclick = () => this.showTitle();
+        document.getElementById('clear-restart-btn').onclick = () => this.game.resetGame();
+        document.getElementById('clear-title-btn').onclick = () => this.showTitle();
+    }
+
+    showTitle() {
+        this.hideAll();
+        this.titleScreen.classList.remove('hidden');
+        this.game.gameState = 'TITLE';
+        if (this.game.bestScore) {
+            this.bestScoreDisplay.textContent = `최고 점수: ${this.game.bestScore}`;
+        }
+    }
+
+    showGameOver(survivalTime) {
+        this.hideAll();
+        this.gameoverScreen.classList.remove('hidden');
+        this.survivalTimeDisplay.textContent = `생존 시간: ${survivalTime}`;
+    }
+
+    showClear() {
+        this.hideAll();
+        this.clearScreen.classList.remove('hidden');
+    }
+
+    hideAll() {
+        this.titleScreen.classList.add('hidden');
+        this.gameoverScreen.classList.add('hidden');
+        this.clearScreen.classList.add('hidden');
+        this.hud.classList.add('hidden');
+    }
+
+    showHUD() {
+        this.hud.classList.remove('hidden');
+    }
+
+    updateTimeline(gameTime, maxTime) {
+        const percent = Math.min((gameTime / maxTime) * 100, 100);
+        this.timelineFill.style.width = percent + '%';
+    }
+
+    updateHP(currentHP) {
+        this.hpDisplay.textContent = `HP: ${currentHP}`;
+    }
+
+    updateBestScore(score) {
+        this.bestScoreDisplay.textContent = `최고 점수: ${score}`;
     }
 
     updateAmmo(current, total) {
