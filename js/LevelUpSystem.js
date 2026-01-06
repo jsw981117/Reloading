@@ -9,7 +9,8 @@ class LevelUpSystem {
                 reloadTime: 0.2,
                 bulletSpeed: 50,
                 range: 100,
-                maxHP: 20
+                maxHP: 20,
+                moveSpeed: 30
             }
         };
 
@@ -45,7 +46,8 @@ class LevelUpSystem {
             { type: 'stat', stat: 'reloadTime', value: cfg.reloadTime, label: '재장전 속도 증가' },
             { type: 'stat', stat: 'bulletSpeed', value: cfg.bulletSpeed, label: `탄속 +${cfg.bulletSpeed}` },
             { type: 'stat', stat: 'range', value: cfg.range, label: `사거리 +${cfg.range}` },
-            { type: 'stat', stat: 'maxHP', value: cfg.maxHP, label: `최대 체력 +${cfg.maxHP}` }
+            { type: 'stat', stat: 'maxHP', value: cfg.maxHP, label: `최대 체력 +${cfg.maxHP}` },
+            { type: 'stat', stat: 'moveSpeed', value: cfg.moveSpeed, label: `이동 속도 +${cfg.moveSpeed}` }
         ];
 
         // 특수탄 선택지

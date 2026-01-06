@@ -86,7 +86,8 @@ class DebugMenu {
                     { id: 'statReloadTime', label: '재장전 시간 감소량', type: 'number', step: 0.1 },
                     { id: 'statBulletSpeed', label: '탄속 증가량', type: 'number', step: 10 },
                     { id: 'statRange', label: '사거리 증가량', type: 'number', step: 10 },
-                    { id: 'statMaxHP', label: '체력 증가량', type: 'number', step: 5 }
+                    { id: 'statMaxHP', label: '체력 증가량', type: 'number', step: 5 },
+                    { id: 'statMoveSpeed', label: '이동 속도 증가량', type: 'number', step: 10 }
                 ]
             },
             {
@@ -144,7 +145,7 @@ class DebugMenu {
         document.getElementById('debug-bulletSpeed').value = p.bulletSpeed;
         document.getElementById('debug-range').value = p.range;
         document.getElementById('debug-maxHP').value = p.maxHP;
-        document.getElementById('debug-moveSpeed').value = this.game.player.moveSpeed;
+        document.getElementById('debug-moveSpeed').value = p.moveSpeed;
         document.getElementById('debug-currentHP').value = this.game.player.hp;
 
         document.getElementById('debug-enemySpeed').value = g.config.enemySpeed;
@@ -164,6 +165,7 @@ class DebugMenu {
         document.getElementById('debug-statBulletSpeed').value = g.levelUpSystem.config.statUpgradeValues.bulletSpeed;
         document.getElementById('debug-statRange').value = g.levelUpSystem.config.statUpgradeValues.range;
         document.getElementById('debug-statMaxHP').value = g.levelUpSystem.config.statUpgradeValues.maxHP;
+        document.getElementById('debug-statMoveSpeed').value = g.levelUpSystem.config.statUpgradeValues.moveSpeed;
 
         document.getElementById('debug-timeScale').value = g.timeScale;
     }
@@ -178,7 +180,7 @@ class DebugMenu {
         p.bulletSpeed = parseFloat(document.getElementById('debug-bulletSpeed').value);
         p.range = parseFloat(document.getElementById('debug-range').value);
         p.maxHP = parseFloat(document.getElementById('debug-maxHP').value);
-        this.game.player.moveSpeed = parseFloat(document.getElementById('debug-moveSpeed').value);
+        p.moveSpeed = parseFloat(document.getElementById('debug-moveSpeed').value);
         this.game.player.hp = parseFloat(document.getElementById('debug-currentHP').value);
 
         this.game.player.magazine.reloadTime = p.reloadTime;
@@ -200,6 +202,7 @@ class DebugMenu {
         g.levelUpSystem.config.statUpgradeValues.bulletSpeed = parseFloat(document.getElementById('debug-statBulletSpeed').value);
         g.levelUpSystem.config.statUpgradeValues.range = parseFloat(document.getElementById('debug-statRange').value);
         g.levelUpSystem.config.statUpgradeValues.maxHP = parseFloat(document.getElementById('debug-statMaxHP').value);
+        g.levelUpSystem.config.statUpgradeValues.moveSpeed = parseFloat(document.getElementById('debug-statMoveSpeed').value);
 
         g.timeScale = parseFloat(document.getElementById('debug-timeScale').value);
 

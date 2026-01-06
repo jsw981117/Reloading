@@ -137,6 +137,8 @@ class UI {
                 return '사거리가 늘어납니다';
             case 'maxHP':
                 return '최대 체력이 증가합니다';
+            case 'moveSpeed':
+                return '이동 속도가 빨라집니다';
             default:
                 return '';
         }

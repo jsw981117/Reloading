@@ -35,3 +35,98 @@ function randomInt(min, max) {
 function randomChoice(array) {
     return array[Math.floor(Math.random() * array.length)];
 }
+
+// 탄환 아이콘 렌더링
+function drawBulletIcon(ctx, type, level, x, y, size) {
+    const colors = {
+        'normal': '#fff',
+        'piercing': '#0ff',
+        'explosive': '#f80',
+        'flame': '#f00',
+        'freeze': '#0af',
+        'shock': '#ff0',
+        'scatter': '#f0f'
+    };
+
+    const color = colors[type] || '#fff';
+    ctx.fillStyle = color;
+
+    if (type === 'normal') {
+        // 정사각형
+        ctx.fillRect(x - size / 2, y - size / 2, size, size);
+    } else {
+        // 마름모
+        ctx.beginPath();
+        ctx.moveTo(x, y - size / 2);
+        ctx.lineTo(x + size / 2, y);
+        ctx.lineTo(x, y + size / 2);
+        ctx.lineTo(x - size / 2, y);
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    // 레벨 표시 (특수탄만)
+    if (type !== 'normal' && level) {
+        ctx.fillStyle = '#000';
+        ctx.font = `bold ${size * 0.6}px Arial`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(level, x, y);
+    }
+}
+
+// 탄환 타입 이름
+function getBulletTypeName(type) {
+    const names = {
+        'normal': '일반탄',
+        'piercing': '관통탄',
+        'explosive': '폭발탄',
+        'flame': '화염탄',
+        'freeze': '냉각탄',
+        'shock': '전격탄',
+        'scatter': '확산탄'
+    };
+    return names[type] || '알 수 없음';
+}
+
+// 탄환 능력치 설명
+function getBulletDescription(type, level) {
+    const descriptions = {
+        'piercing': [
+            '적 1개 관통',
+            '적 2개 관통',
+            '적 3개 관통'
+        ],
+        'explosive': [
+            '반경 30 폭발 (데미지 8)',
+            '반경 50 폭발 (데미지 13)',
+            '반경 70 폭발 (데미지 18)'
+        ],
+        'flame': [
+            '화상 2 DPS (3초)',
+            '화상 4 DPS (4초)',
+            '화상 6 DPS (5초)'
+        ],
+        'freeze': [
+            '50% 감속 (2초)',
+            '60% 감속 (2.5초)',
+            '70% 감속 (3초)'
+        ],
+        'shock': [
+            '0.5초 스턴',
+            '0.8초 스턴',
+            '1.1초 스턴'
+        ],
+        'scatter': [
+            '3발 산탄 (15° 확산)',
+            '4발 산탄 (15° 확산)',
+            '5발 산탄 (25° 확산)'
+        ]
+    };
+
+    if (type === 'normal') {
+        return '기본 탄환 (데미지 10)';
+    }
+
+    return descriptions[type] ? descriptions[type][level - 1] : '';
+}

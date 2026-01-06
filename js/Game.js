@@ -42,38 +42,73 @@ class Game {
         this.enemySpawnInterval = 2;
 
         this.isPaused = false;
-        this.inputX = null;
-        this.inputY = null;
+
+        // 입력 시스템
+        this.keys = {};
+        this.mouseDown = false;
+        this.mouseX = null;
+        this.mouseY = null;
 
         this.setupInput();
         this.ui.showTitle();
     }
 
     setupInput() {
-        // 터치 입력
-        this.canvas.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            const rect = this.canvas.getBoundingClientRect();
-            const touch = e.touches[0];
-            this.inputX = ((touch.clientX - rect.left) / rect.width) * this.width;
-            this.inputY = ((touch.clientY - rect.top) / rect.height) * this.height;
+        // 키보드 입력
+        window.addEventListener('keydown', (e) => {
+            this.keys[e.key.toLowerCase()] = true;
         });
 
-        this.canvas.addEventListener('touchend', () => {
-            this.inputX = null;
-            this.inputY = null;
+        window.addEventListener('keyup', (e) => {
+            this.keys[e.key.toLowerCase()] = false;
         });
 
         // 마우스 입력
-        this.canvas.addEventListener('mousemove', (e) => {
+        this.canvas.addEventListener('mousedown', (e) => {
+            this.mouseDown = true;
             const rect = this.canvas.getBoundingClientRect();
-            this.inputX = ((e.clientX - rect.left) / rect.width) * this.width;
-            this.inputY = ((e.clientY - rect.top) / rect.height) * this.height;
+            this.mouseX = ((e.clientX - rect.left) / rect.width) * this.width;
+            this.mouseY = ((e.clientY - rect.top) / rect.height) * this.height;
+        });
+
+        this.canvas.addEventListener('mouseup', () => {
+            this.mouseDown = false;
+        });
+
+        this.canvas.addEventListener('mousemove', (e) => {
+            if (this.mouseDown) {
+                const rect = this.canvas.getBoundingClientRect();
+                this.mouseX = ((e.clientX - rect.left) / rect.width) * this.width;
+                this.mouseY = ((e.clientY - rect.top) / rect.height) * this.height;
+            }
         });
 
         this.canvas.addEventListener('mouseleave', () => {
-            this.inputX = null;
-            this.inputY = null;
+            this.mouseDown = false;
+        });
+
+        // 터치 입력
+        this.canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            this.mouseDown = true;
+            const rect = this.canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            this.mouseX = ((touch.clientX - rect.left) / rect.width) * this.width;
+            this.mouseY = ((touch.clientY - rect.top) / rect.height) * this.height;
+        });
+
+        this.canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            if (this.mouseDown) {
+                const rect = this.canvas.getBoundingClientRect();
+                const touch = e.touches[0];
+                this.mouseX = ((touch.clientX - rect.left) / rect.width) * this.width;
+                this.mouseY = ((touch.clientY - rect.top) / rect.height) * this.height;
+            }
+        });
+
+        this.canvas.addEventListener('touchend', () => {
+            this.mouseDown = false;
         });
     }
 
@@ -89,7 +124,7 @@ class Game {
         this.checkBossSpawn();
 
         // 플레이어 업데이트 & 사격
-        const newBullets = this.player.update(deltaTime, this.inputX, this.inputY);
+        const newBullets = this.player.update(deltaTime, this.keys, this.mouseDown, this.mouseX, this.mouseY);
         if (newBullets) {
             if (Array.isArray(newBullets)) {
                 this.bullets.push(...newBullets);
@@ -181,14 +216,27 @@ class Game {
         });
     }
 
+    getOccupiedLanes() {
+        const occupied = new Set();
+        for (const enemy of this.enemies) {
+            if (enemy.active && enemy.y < 100) {
+                enemy.occupiedLanes.forEach(lane => occupied.add(lane));
+            }
+        }
+        return occupied;
+    }
+
     spawnEnemy() {
         const lanes = this.config.lanes;
         const laneWidth = this.width / lanes;
         const y = -40;
+        const occupiedLanes = this.getOccupiedLanes();
 
         for (let i = 0; i < lanes; i++) {
-            const x = laneWidth * i + laneWidth / 2;
-            this.enemies.push(new Enemy(x, y, i, this.config));
+            if (!occupiedLanes.has(i)) {
+                const x = laneWidth * i + laneWidth / 2;
+                this.enemies.push(new Enemy(x, y, i, this.config, 1, false, lanes));
+            }
         }
     }
 
@@ -228,11 +276,12 @@ class Game {
     }
 
     spawnBoss(size) {
-        const laneWidth = this.width / this.config.lanes;
-        const centerLane = Math.floor(this.config.lanes / 2);
+        const lanes = this.config.lanes;
+        const laneWidth = this.width / lanes;
+        const centerLane = Math.floor(lanes / 2);
         const x = laneWidth * centerLane + laneWidth / 2;
         const y = -100;
-        this.enemies.push(new Enemy(x, y, centerLane, this.config, size, true));
+        this.enemies.push(new Enemy(x, y, centerLane, this.config, size, true, lanes));
     }
 
     checkEnemyReachBottom() {

@@ -1,5 +1,5 @@
 class Enemy {
-    constructor(x, y, lane = 0, config = null, size = 1, isBoss = false) {
+    constructor(x, y, lane = 0, config = null, size = 1, isBoss = false, totalLanes = 5) {
         this.x = x;
         this.y = y;
         this.lane = lane;
@@ -31,6 +31,24 @@ class Enemy {
 
         this.statusEffects = [];
         this.active = true;
+
+        // 차지하는 레인 계산
+        this.occupiedLanes = this.calculateOccupiedLanes(totalLanes);
+    }
+
+    calculateOccupiedLanes(totalLanes) {
+        const lanes = [];
+        if (this.size === 1) {
+            lanes.push(this.lane);
+        } else if (this.size === 2) {
+            lanes.push(this.lane);
+            if (this.lane + 1 < totalLanes) lanes.push(this.lane + 1);
+        } else if (this.size === 3) {
+            if (this.lane - 1 >= 0) lanes.push(this.lane - 1);
+            lanes.push(this.lane);
+            if (this.lane + 1 < totalLanes) lanes.push(this.lane + 1);
+        }
+        return lanes;
     }
 
     update(deltaTime, enemies) {
@@ -70,8 +88,9 @@ class Enemy {
         for (const enemy of enemies) {
             if (enemy === this || !enemy.active) continue;
 
-            // 같은 레인 체크
-            if (enemy.lane === this.lane) {
+            // 레인 겹침 체크
+            const hasLaneOverlap = this.occupiedLanes.some(lane => enemy.occupiedLanes.includes(lane));
+            if (hasLaneOverlap) {
                 // 앞에 있는 적인지 확인
                 if (enemy.y < this.y) {
                     const enemyBottom = enemy.y + enemy.height / 2;
